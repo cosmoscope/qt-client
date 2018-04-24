@@ -24,6 +24,12 @@ class DataItemModel(QAbstractListModel):
         # self._hub.subscribe(AddDataMessage, self.add_data, self)
         # self._hub.subscribe(AddPlotDataMessage, self.add_data, self)
 
+    def flags(self, index):
+        flags = super(DataItemModel, self).flags(index)
+        flags |= Qt.ItemIsEditable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled
+
+        return flags
+
     def roleNames(self):
         return {
             self.ItemRole: b'item'
@@ -36,9 +42,21 @@ class DataItemModel(QAbstractListModel):
     def at(self, index):
         return self._items[index]
 
-    def data(self, index, role):
+    def data(self, index, role=None):
+        if not index.isValid():
+            return
+
         if role == self.ItemRole:
             return self._items[index.row()]
+        elif role == Qt.DisplayRole:
+            return self._items[index.row()].name
+        elif role == Qt.CheckStateRole:
+            item = self._items[index.row()]
+
+            if item.visible:
+                return Qt.Checked
+
+            return Qt.Unchecked
 
         return QVariant()
 
