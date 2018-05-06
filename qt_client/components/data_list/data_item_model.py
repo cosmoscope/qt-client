@@ -1,7 +1,7 @@
 import numpy as np
 from PyQt5.QtQml import QQmlListProperty
 
-from qml_client.hub import Hub, Message
+from ...hub import Hub, Message
 
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, QVariant, pyqtSlot
 
